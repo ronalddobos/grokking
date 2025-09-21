@@ -2,7 +2,8 @@
 
 A clean reproduction of Neel Nanda's grokking experiments, implementing a simple transformer model that demonstrates the grokking phenomenon on modular arithmetic tasks.
 
-![Display of grokking](/logs/P_113/training_curves.png)
+![Grokking Training Curves](logs/P_113/training_curves.png)
+*Example training curves showing the grokking phenomenon: the model first memorizes the training data (high train accuracy, low test accuracy), then after extended training suddenly generalizes (test accuracy rapidly improves).*
 
 ## Overview
 
