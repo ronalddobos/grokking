@@ -30,8 +30,12 @@ class Config:
         return {'add': lambda x, y: (x + y) % self.p}[self.fn_name]
 
     @property
-    def save_dir(self):
+    def log_dir(self):
         return os.path.join("logs", self.tag)
+
+    @property
+    def model_dir(self):
+        return os.path.join("model", self.tag)
 
 
 class SimpleTransformer(nn.Module):
@@ -92,15 +96,15 @@ class SimpleTransformer(nn.Module):
         return x @ self.W_U
 
 
-def check_for_checkpoint(config):
+def check_for_checkpoint(config: Config):
     """Check if a checkpoint exists and return checkpoint info."""
-    checkpoint_path = os.path.join(config.save_dir, "checkpoint.pth")
+    checkpoint_path = os.path.join(config.model_dir, "checkpoint.pth")
     if os.path.exists(checkpoint_path):
         return torch.load(checkpoint_path, map_location='cpu')
     return None
 
 
-def save_checkpoint(config, model, optimizer, epoch, train_data, test_data):
+def save_checkpoint(config: Config, model, optimizer, epoch, train_data, test_data):
     """Save training checkpoint."""
     checkpoint = {
         'model_state_dict': model.state_dict(),
@@ -110,7 +114,7 @@ def save_checkpoint(config, model, optimizer, epoch, train_data, test_data):
         'test_data': test_data,
         'config': config.__dict__
     }
-    checkpoint_path = os.path.join(config.save_dir, "checkpoint.pth")
+    checkpoint_path = os.path.join(config.model_dir, "checkpoint.pth")
     torch.save(checkpoint, checkpoint_path)
 
 
@@ -127,7 +131,7 @@ def train_model(config, resume=True):
         torch.cuda.manual_seed(config.seed)
 
     # Create save directory structure
-    os.makedirs(config.save_dir, exist_ok=True)
+    os.makedirs(config.log_dir, exist_ok=True)
 
     # Check for existing checkpoint
     checkpoint = None
@@ -155,7 +159,7 @@ def train_model(config, resume=True):
             **config.__dict__,
             "start_time": start_time.isoformat(),
         }
-        config_path = os.path.join(config.save_dir, "config.json")
+        config_path = os.path.join(config.log_dir, "config.json")
         with open(config_path, "w") as f:
             json.dump(config_data, f, indent=2)
 
@@ -179,7 +183,7 @@ def train_model(config, resume=True):
         return loss, acc
 
     # Initialize log file
-    log_file = os.path.join(config.save_dir, "training_log.jsonl")
+    log_file = os.path.join(config.log_dir, "training_log.jsonl")
 
     # Training loop
     for epoch in range(start_epoch, config.num_epochs):
@@ -217,7 +221,7 @@ def train_model(config, resume=True):
     # Record finish time (only update if we started fresh)
     if not checkpoint:
         finish_time = datetime.now()
-        config_path = os.path.join(config.save_dir, "config.json")
+        config_path = os.path.join(config.log_dir, "config.json")
         with open(config_path, "r") as f:
             config_data = json.load(f)
         config_data["finish_time"] = finish_time.isoformat()
@@ -226,7 +230,7 @@ def train_model(config, resume=True):
             json.dump(config_data, f, indent=2)
 
     # Save final model
-    model_path = os.path.join(config.save_dir, "final_model.pth")
+    model_path = os.path.join(config.model_dir, "final_model.pth")
     torch.save({
         'model_state_dict': model.state_dict(),
         'config': config.__dict__,
@@ -235,17 +239,17 @@ def train_model(config, resume=True):
     }, model_path)
 
     # Clean up checkpoint file
-    checkpoint_path = os.path.join(config.save_dir, "checkpoint.pth")
+    checkpoint_path = os.path.join(config.model_dir, "checkpoint.pth")
     if os.path.exists(checkpoint_path):
         os.remove(checkpoint_path)
 
     print(f"[{config.tag}] Training completed")
-    print(f"[{config.tag}] Logs saved to {config.save_dir}")
+    print(f"[{config.tag}] Logs saved to {config.log_dir}")
 
 
 def plot_training_curves(config: Config, show_plot=True):
     """Load logs and create training curve plots."""
-    log_file = os.path.join(config.save_dir, "training_log.jsonl")
+    log_file = os.path.join(config.log_dir, "training_log.jsonl")
 
     # Load all logs
     logs = []
@@ -285,7 +289,7 @@ def plot_training_curves(config: Config, show_plot=True):
     plt.tight_layout()
 
     # Save figure
-    fig_path = os.path.join(config.save_dir, "training_curves.png")
+    fig_path = os.path.join(config.log_dir, "training_curves.png")
     plt.savefig(fig_path, dpi=300, bbox_inches='tight')
     print(f"Figure saved to {fig_path}")
 
