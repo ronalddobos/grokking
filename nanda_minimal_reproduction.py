@@ -35,7 +35,7 @@ class Config:
 
     @property
     def model_dir(self):
-        return os.path.join("model", self.tag)
+        return os.path.join("models", self.tag)
 
 
 class SimpleTransformer(nn.Module):
@@ -132,6 +132,7 @@ def train_model(config, resume=True):
 
     # Create save directory structure
     os.makedirs(config.log_dir, exist_ok=True)
+    os.makedirs(config.model_dir, exist_ok=True)
 
     # Check for existing checkpoint
     checkpoint = None
@@ -218,6 +219,9 @@ def train_model(config, resume=True):
         optimizer.step()
         optimizer.zero_grad()
 
+    # Save final checkpoint at the end
+    save_checkpoint(config, model, optimizer, config.num_epochs - 1, train_data, test_data)
+
     # Record finish time (only update if we started fresh)
     if not checkpoint:
         finish_time = datetime.now()
@@ -228,20 +232,6 @@ def train_model(config, resume=True):
         config_data["duration_seconds"] = (finish_time - start_time).total_seconds()
         with open(config_path, "w") as f:
             json.dump(config_data, f, indent=2)
-
-    # Save final model
-    model_path = os.path.join(config.model_dir, "final_model.pth")
-    torch.save({
-        'model_state_dict': model.state_dict(),
-        'config': config.__dict__,
-        'final_train_acc': train_acc.item(),
-        'final_test_acc': test_acc.item()
-    }, model_path)
-
-    # Clean up checkpoint file
-    checkpoint_path = os.path.join(config.model_dir, "checkpoint.pth")
-    if os.path.exists(checkpoint_path):
-        os.remove(checkpoint_path)
 
     print(f"[{config.tag}] Training completed")
     print(f"[{config.tag}] Logs saved to {config.log_dir}")
@@ -306,5 +296,5 @@ def train_grokking(config: Config, resume=True):
 
 
 if __name__ == "__main__":
-    config = Config(tag="P_67", num_epochs=50_000, p=67)
-    train_grokking(config)
+    config = Config(tag="P_113", num_epochs=10_000, p=113)
+    train_grokking(config, resume=True)
