@@ -1,6 +1,18 @@
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Callable
+import git
+
+
+def get_repo_root() -> str:
+    """Find the repository root using GitPython."""
+    try:
+        repo = git.Repo(Path(__file__).resolve(), search_parent_directories=True)
+        return str(repo.working_dir)
+    except git.InvalidGitRepositoryError:
+        # Fallback: assume we're in src/ and go up one level
+        return str(Path(__file__).parent.parent)
 
 
 @dataclass
@@ -24,8 +36,8 @@ class Config:
 
     @property
     def log_dir(self) -> str:
-        return os.path.join('logs', self.tag)
+        return os.path.join(get_repo_root(), 'logs', self.tag)
 
     @property
     def model_dir(self) -> str:
-        return os.path.join('models', self.tag)
+        return os.path.join(get_repo_root(), 'models', self.tag)

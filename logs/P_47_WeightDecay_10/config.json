@@ -1,0 +1,15 @@
+{
+  "tag": "P_47_WeightDecay_10",
+  "p": 113,
+  "d_model": 128,
+  "d_mlp": 512,
+  "num_heads": 4,
+  "lr": 0.001,
+  "weight_decay": 10,
+  "frac_train": 0.3,
+  "num_epochs": 10000,
+  "seed": 0,
+  "fn_name": "add",
+  "device": "cuda",
+  "start_time": "2025-09-21T16:53:23.897116"
+}

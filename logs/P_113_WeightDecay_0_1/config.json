@@ -1,0 +1,17 @@
+{
+  "tag": "P_113_WeightDecay_0_1",
+  "p": 113,
+  "d_model": 128,
+  "d_mlp": 512,
+  "num_heads": 4,
+  "lr": 0.001,
+  "weight_decay": 0.1,
+  "frac_train": 0.3,
+  "num_epochs": 50000,
+  "seed": 0,
+  "fn_name": "add",
+  "device": "cuda",
+  "start_time": "2025-09-21T16:24:12.490592",
+  "finish_time": "2025-09-21T16:47:49.695068",
+  "duration_seconds": 1417.204476
+}
