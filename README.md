@@ -8,6 +8,8 @@ This project is a modular, well-structured reproduction of the grokking experime
 
 The codebase has been refactored from the original implementation to provide better modularity, type safety, and maintainability while preserving the core experimental setup and results.
 
+![grokking](https://github.com/ronalddobos/grokking/logs/P_113/training_curves.png?raw=true)
+
 ## Original Work
 
 This reproduction is based on:
