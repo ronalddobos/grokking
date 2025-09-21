@@ -54,19 +54,14 @@ grokking/
 ### Basic Training
 
 ```python
-from src.config import Config
-from src.trainer import train_grokking
+from config import Config
+from plotting import plot_training_curves
+from src.trainer import train_model
 
-# Create configuration
-config = Config(
-    tag='experiment_1',
-    p=113,              # Prime number for modular arithmetic
-    num_epochs=50000,
-    lr=1e-3
-)
+if __name__ == '__main__':
+    config = Config(tag='P_47', num_epochs=10_000, p=47)
 
-# Start training
-train_grokking(config, resume=True)
+    train_model(config, resume=True)
 ```
 
 ### Configuration Options
@@ -157,8 +152,9 @@ models/experiment_name/
 ## Example
 
 ```python
-from src.config import Config
-from src.trainer import train_grokking
+from config import Config
+from plotting import plot_training_curves
+from src.trainer import train_model
 
 # Small-scale experiment
 config = Config(
@@ -168,7 +164,10 @@ config = Config(
     d_model=64
 )
 
-train_grokking(config)
+if __name__ == '__main__':
+    train_model(config, resume=True)
+    plot_training_curves(config)
+
 ```
 
 This will train a model on modular addition with prime p=47, save all results to `logs/quick_test/` and `models/quick_test/`, and display training curves upon completion.
