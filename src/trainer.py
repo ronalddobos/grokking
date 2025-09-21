@@ -127,10 +127,3 @@ def train_model(config: Config, resume: bool = True) -> None:
 
     print(f'[{config.tag}] Training completed')
     print(f'[{config.tag}] Logs saved to {config.log_dir}')
-
-
-def train_grokking(config: Config, resume: bool = True) -> None:
-    """Complete training pipeline with plotting."""
-    from plotting import plot_training_curves
-    train_model(config, resume=resume)
-    plot_training_curves(config)
