@@ -2,13 +2,13 @@
 
 A clean reproduction of Neel Nanda's grokking experiments, implementing a simple transformer model that demonstrates the grokking phenomenon on modular arithmetic tasks.
 
+![Display of grokking](/logs/P_113/training_curves.png)
+
 ## Overview
 
 This project is a modular, well-structured reproduction of the grokking experiments originally implemented by Neel Nanda. It implements a minimal transformer architecture to study grokking - the phenomenon where neural networks suddenly transition from memorization to generalization well after achieving perfect training accuracy. The model learns modular arithmetic operations (addition by default) over finite fields.
 
 The codebase has been refactored from the original implementation to provide better modularity, type safety, and maintainability while preserving the core experimental setup and results.
-
-![grokking](https://github.com/ronalddobos/grokking/logs/P_113/training_curves.png?raw=true)
 
 ## Original Work
 
