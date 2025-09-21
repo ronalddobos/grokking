@@ -1,3 +1,4 @@
 .idea/
 tt.py
 .venv
+logs/*.pth
