@@ -1,0 +1,17 @@
+{
+  "tag": "P_113",
+  "p": 113,
+  "d_model": 128,
+  "d_mlp": 512,
+  "num_heads": 4,
+  "lr": 0.001,
+  "weight_decay": 1.0,
+  "frac_train": 0.3,
+  "num_epochs": 10000,
+  "seed": 0,
+  "fn_name": "add",
+  "device": "cuda",
+  "start_time": "2025-09-21T15:28:09.451978",
+  "finish_time": "2025-09-21T15:33:03.710163",
+  "duration_seconds": 294.258185
+}
